@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  # LocalStack for AWS KMS, SQS, DynamoDB
+  localstack:
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=kms,sqs,dynamodb
+      - AWS_DEFAULT_REGION=us-east-1
+      - LOCALSTACK_AUTH_TOKEN=${LOCALSTACK_AUTH_TOKEN:-}
+    volumes:
+      - "./localstack-init:/etc/localstack/init/ready.d"
+
+  # Ethereum Local Dev Node (Anvil from Foundry)
+  anvil:
+    image: ghcr.io/foundry-rs/foundry:latest
+    ports:
+      - "8545:8545"
+    entrypoint: ["anvil", "--host", "0.0.0.0"]
+
+  # Relational Database for Wallet Metadata
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=relayer_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=1234567

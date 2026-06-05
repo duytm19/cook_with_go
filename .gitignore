@@ -1,0 +1,54 @@
+# Go binaries and testing outputs
+bin/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+*.prof
+
+# Go module cache and vendor (if used)
+vendor/
+
+# Local configuration and environment variables
+.env
+.env.*
+!.env.example
+
+# IDEs and Editors
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+Thumbs.db
+db.webproj
+*.DS_Store
+ehthumbs.db
+
+# Docker and local database storage
+.docker/
+docker-compose.override.yml
+pgdata/
+
+# Terraform runtime files
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+crash.log
+override.tf
+override.tf.json
+*._override.tf
+*._override.tf.json
+
+# LocalStack and temp runfiles
+.localstack/
+*.log
+tmp/
