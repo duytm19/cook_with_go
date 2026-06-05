@@ -1,0 +1,75 @@
+openapi: 3.0.3
+info:
+  title: Web3 Relayer Engine API
+  version: 1.0.0
+paths:
+  /v1/wallets:
+    post:
+      summary: Create a new custodial wallet
+      operationId: createWallet
+      responses:
+        '201':
+          description: Wallet created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+  /v1/transactions/send:
+    post:
+      summary: Send a relayed transaction
+      operationId: sendTransaction
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+      responses:
+        '202':
+          description: Transaction accepted and queued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionResponse'
+components:
+  schemas:
+    Wallet:
+      type: object
+      required:
+        - wallet_id
+        - address
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        address:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+    TransactionRequest:
+      type: object
+      required:
+        - wallet_id
+        - to_address
+        - data
+      properties:
+        wallet_id:
+          type: string
+          format: uuid
+        to_address:
+          type: string
+          pattern: '^0x[a-fA-F0-9]{40}$'
+        data:
+          type: string
+          description: Hex-encoded contract payload (e.g., 0xa9059cbb...)
+    TransactionResponse:
+      type: object
+      required:
+        - tx_id
+        - status
+      properties:
+        tx_id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum: [QUEUED]
